@@ -9,6 +9,10 @@ using namespace std;
 
 int main ()
 {
-    cout << "COUCOU, c'est le début du projet!" << endl;
+    int width(80), height(24);
+    vector<char> pixelBuffer(width*height, '*');
+    draw(pixelBuffer);
+    clear(pixelBuffer);
+    draw(pixelBuffer);
     return 0;
 }
