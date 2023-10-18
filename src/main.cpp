@@ -1,18 +1,14 @@
 #include <iostream>
 #include <vector>
 //
-#include "ManageTerminal.hpp"
-#include "LibMath.hpp"
-
+#include "PixelBuffer.hpp"
 
 using namespace std;
 
 int main ()
 {
-    int width(80), height(24);
-    vector<char> pixelBuffer(width*height, '*');
-    draw(pixelBuffer);
-    clear(pixelBuffer);
-    draw(pixelBuffer);
+    PixelBuffer myBuffer('*', 80, 24);
+    myBuffer.placePix('-',1,10);
+    myBuffer.affiche();
     return 0;
 }
