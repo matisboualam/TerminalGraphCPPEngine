@@ -14,15 +14,21 @@ vector<double> Point::getCoord()
     return m_coord;
 }
 
+bool Point::isInBuffer(PixelBuffer buffer)
+{
+    int w = buffer.getDimension()[0];
+    int h = buffer.getDimension()[1];
+    return (m_x >= 0 && m_x<=w && m_y >= 0 && m_y <=h);
+}
+
 bool Point::isInTriangle(Triangle tri)
 {
     Point P1 =  tri.getPoints()[0];
     Point P2 =  tri.getPoints()[1];
     Point P3 =  tri.getPoints()[2];
-
-    int side1 = (P3.getCoord()[0] - m_x) * (P1.getCoord()[1] - m_y) - (P1.getCoord()[0] - m_x) * (P2.getCoord()[1] - m_y);
-    int side2 = (P1.getCoord()[0] - m_x) * (P2.getCoord()[1] - m_y) - (P2.getCoord()[0] - m_x) * (P2.getCoord()[1] - m_y);
-    int side3 = (P2.getCoord()[0] - m_x) * (P3.getCoord()[1] - m_y) - (P3.getCoord()[0] - m_x) * (P2.getCoord()[1] - m_y);
+    int side1 = (P2.getCoord()[0] - P1.getCoord()[0]) * (m_y - P1.getCoord()[1]) - (P2.getCoord()[1] - P1.getCoord()[1]) * (m_x - P1.getCoord()[0]);
+    int side2 = (P3.getCoord()[0] - P2.getCoord()[0]) * (m_y - P2.getCoord()[1]) - (P3.getCoord()[1] - P2.getCoord()[1]) * (m_x - P2.getCoord()[0]);
+    int side3 = (P1.getCoord()[0] - P3.getCoord()[0]) * (m_y - P3.getCoord()[1]) - (P1.getCoord()[1] - P3.getCoord()[1]) * (m_x - P3.getCoord()[0]);
     
     return ((side1 >= 0 && side2 >= 0 && side3 >= 0) || (-side1 >= 0 && -side2 >= 0 && -side3 >= 0));
 }
@@ -48,22 +54,10 @@ vector<double> Triangle::limitTriangle()
     xMin = Xs[0];
     xMax = Xs[2]+1;
 
-    // for (int i = 0; i<Xs.size(); i++)
-    // {
-    //     cout << Xs[i] << " ";
-    // }
-    // cout << endl;
-
     vector<double> Ys = {m_P1.getCoord()[1], m_P2.getCoord()[1], m_P3.getCoord()[1]};
     sort(Ys.begin(), Ys.end());
     yMin = Ys[0];
     yMax = Ys[2]+1;
-
-    // for (int i = 0; i<Ys.size(); i++)
-    // {
-    //     cout << Ys[i] << " ";
-    // }
-    // cout << endl;
 
     vector<double> limits = {xMin, xMax, yMin, yMax};
     return limits;

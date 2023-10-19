@@ -16,12 +16,14 @@ public:
     PixelBuffer(char, int, int);
     void affiche() const;
     void placePix(char pix, Point p);
-    void drawTriangle(Triangle tri);
+    std::vector<int> getDimension();
+    void drawTriangle(char pix, Triangle tri);
+    void clear();
 private:
     char m_bgChar;
     int m_width;
     int m_heigth;
-    std::vector<char> m_pixelBuffer;
+    std::vector<std::vector<char>> m_pixelBuffer;
 };
 
 #endif

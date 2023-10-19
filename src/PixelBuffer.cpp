@@ -3,18 +3,28 @@
 
 using namespace std;
 
-PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_heigth(h)
+PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_heigth(h), m_pixelBuffer(m_heigth,vector<char>(m_width, bg)) {}
+
+void PixelBuffer::clear()
 {
-    m_pixelBuffer = vector<char>(m_width*(m_heigth-1), m_bgChar);
+    m_pixelBuffer = vector<vector<char>>(m_heigth, vector<char>(m_width, m_bgChar));
 }
 
 void PixelBuffer::affiche() const
 {
-    for(int i = 0; i<m_pixelBuffer.size(); ++i)
+    for(int y = 0; y < m_heigth; ++y)
     {
-        cout << m_pixelBuffer[i];
+        for(int x = 0; x < m_width; ++x)
+        {
+            cout << m_pixelBuffer[y][x];
+        }
     }
     cout << endl;
+}
+
+vector<int> PixelBuffer::getDimension()
+{
+    return {m_width, m_heigth};
 }
 
 void PixelBuffer::placePix(char pixel, Point p)
@@ -23,19 +33,13 @@ void PixelBuffer::placePix(char pixel, Point p)
     int y = round(p.getCoord()[1]);
     if(x<=m_width && y<=m_heigth)
     {
-        m_pixelBuffer[x + y*m_width] = pixel;
+        m_pixelBuffer[y][x] = pixel;
     }
 }
 
-void PixelBuffer::drawTriangle(Triangle tri)
+void PixelBuffer::drawTriangle(char pix, Triangle tri)
 {
     vector<double> limits = tri.limitTriangle();
-    // for (int i = 0; i<limits.size(); i++)
-    // {
-    //     cout << limits[i] << " ";
-    // }
-    // cout << endl;
-
     int xMin, xMax, yMin, yMax;
     xMin = round(limits[0]);
     xMax = round(limits[1]);
@@ -49,7 +53,7 @@ void PixelBuffer::drawTriangle(Triangle tri)
             Point p(x,y);
             if (p.isInTriangle(tri))
             {
-                placePix(' ',p);
+                placePix(pix, p);
             }
         }
     }

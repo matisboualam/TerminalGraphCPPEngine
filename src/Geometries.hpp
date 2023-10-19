@@ -15,6 +15,7 @@ class Point
 public:
     Point(double x, double y);
     std::vector<double> getCoord();
+    bool isInBuffer(PixelBuffer buffer);
     bool isInTriangle(Triangle tri);
 private:
     double m_x;
