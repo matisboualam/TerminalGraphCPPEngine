@@ -14,12 +14,7 @@ vector<double> Point::getCoord()
     return m_coord;
 }
 
-bool Point::isInBuffer(PixelBuffer buffer)
-{
-    int w = buffer.getDimension()[0];
-    int h = buffer.getDimension()[1];
-    return (m_x >= 0 && m_x<=w && m_y >= 0 && m_y <=h);
-}
+
 
 bool Point::isInTriangle(Triangle tri)
 {

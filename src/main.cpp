@@ -29,7 +29,7 @@ int main ()
         tri1 = Triangle(P1, P2, P3);
 
         Q1 = Point(Q1.getCoord()[0]+i, Q1.getCoord()[1]); 
-        Q2 = Point(Q2.getCoord()[0]+i, Q2.getCoord()[1]); 
+        Q2 = Point(Q2.getCoord()[0]+i, Q2.getCoord()[1]+i); 
         Q3 = Point(Q3.getCoord()[0]+i/2, Q3.getCoord()[1]); 
         tri2 = Triangle(Q1, Q2, Q3);
 

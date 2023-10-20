@@ -3,16 +3,16 @@
 
 using namespace std;
 
-PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_heigth(h), m_pixelBuffer(m_heigth,vector<char>(m_width, bg)) {}
+PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_height(h), m_pixelBuffer(m_height,vector<char>(m_width, bg)) {}
 
 void PixelBuffer::clear()
 {
-    m_pixelBuffer = vector<vector<char>>(m_heigth, vector<char>(m_width, m_bgChar));
+    m_pixelBuffer = vector<vector<char>>(m_height, vector<char>(m_width, m_bgChar));
 }
 
 void PixelBuffer::affiche() const
 {
-    for(int y = 0; y < m_heigth; ++y)
+    for(int y = 0; y < m_height; ++y)
     {
         for(int x = 0; x < m_width; ++x)
         {
@@ -22,20 +22,24 @@ void PixelBuffer::affiche() const
     cout << endl;
 }
 
-vector<int> PixelBuffer::getDimension()
-{
-    return {m_width, m_heigth};
-}
-
 void PixelBuffer::placePix(char pixel, Point p)
 {
     int x = round(p.getCoord()[0]);
     int y = round(p.getCoord()[1]);
-    if(x<=m_width && y<=m_heigth)
+    if(x<=m_width && y<=m_height)
     {
         m_pixelBuffer[y][x] = pixel;
     }
 }
+
+bool PixelBuffer::isInBuffer(Point p)
+{
+    int x = p.getCoord()[0];
+    int y = p.getCoord()[1];
+    return (x >= 0 && x<=m_width && y >= 0 && y <= m_height);
+}
+
+
 
 void PixelBuffer::drawTriangle(char pix, Triangle tri)
 {
@@ -51,9 +55,11 @@ void PixelBuffer::drawTriangle(char pix, Triangle tri)
         for(int x = xMin; x < xMax; ++x)
         {
             Point p(x,y);
-            if (p.isInTriangle(tri))
-            {
-                placePix(pix, p);
+            if (isInBuffer(p)){
+                if (p.isInTriangle(tri))
+                {
+                    placePix(pix, p);
+                }
             }
         }
     }
