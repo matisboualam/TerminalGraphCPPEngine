@@ -8,33 +8,74 @@
 
 // Forward declaration
 class PixelBuffer;
-class Triangle;
+class Point2D;
+class Triangle2D;
+class Point3D;
+class Triangle3D;
 
-class Point
+class Point2D
 {
 public:
-    Point(double x, double y); // x (horizontal), y (vertical)
+    Point2D(double x, double y); // x (horizontal), y (vertical) normalized (between -1:1)
+    bool isInTriangle2D(Triangle2D tri); // check if Point2D inside Triangle2D
+    void toScreen(); // rescale coords to buffer dimension
     std::vector<double> getCoord();
-    bool isInTriangle(Triangle tri); // check if Point inside Triangle
+
+    Point2D operator*(const double c) const;
+    Point2D operator/(const double c) const;
+    Point2D operator+(const Point2D P) const;
+
 private:
     double m_x;
     double m_y;
-    std::vector<double> m_coord; // 2D vector representing Points coords (x,y)
+    std::vector<double> m_coord; // 2D vector representing Point2Ds coords (x,y)
 };
 
-class Triangle
+class Point3D
 {
 public:
-    Triangle(char pix, Point P1, Point P2, Point P3); //char for triangle, coords from 3 vertices
+    Point3D(double x, double y, double z); // x (horizontal), y (vertical) normalized (between -1:1)
+    Point2D projection(); // 3D to 2D point
+    
+
+    Point3D operator*(const double c) const;
+    Point3D operator/(const double c) const;
+    Point3D operator+(const Point3D P) const;
+    
+private:
+    double m_x;
+    double m_y;
+    double m_z;
+    std::vector<double> m_coord; // 2D vector representing Point2Ds coords (x,y)
+};
+
+class Triangle2D
+{
+public:
+    Triangle2D(char pix, Point2D P1, Point2D P2, Point2D P3); //char for Triangle2D, coords from 3 vertices
     char getPixel();
-    std::vector<Point> getPoints();
-    std::vector<double> limitTriangle(); //return x/y min:max from triangle
+    std::vector<Point2D> getPoint2Ds();
+    std::vector<double> limitTriangle2D(); //return x/y min:max from Triangle2D
 
 private:
     char m_pix;
-    Point m_P1;
-    Point m_P2;
-    Point m_P3;
+    Point2D m_P1;
+    Point2D m_P2;
+    Point2D m_P3;
+};
+
+class Triangle3D
+{
+public:
+    Triangle3D(char pix, Point3D P1, Point3D P2, Point3D P3); //char for Triangle3D, coords from 3 vertices
+    Triangle2D projection();
+    Triangle3D translate(Point3D P);
+
+private:
+    char m_pix;
+    Point3D m_P1;
+    Point3D m_P2;
+    Point3D m_P3;
 };
 
 #endif
