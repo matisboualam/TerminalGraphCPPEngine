@@ -29,9 +29,13 @@ bool Point::isInTriangle(Triangle tri)
 }
 
 
-Triangle::Triangle (Point P1, Point P2, Point P3) : m_P1(P1), m_P2(P2), m_P3(P3)
+Triangle::Triangle (char pix, Point P1, Point P2, Point P3) : m_pix(pix), m_P1(P1), m_P2(P2), m_P3(P3)
 {}
 
+char Triangle::getPixel()
+{
+    return m_pix;
+}
 vector<Point> Triangle::getPoints()
 {
     vector<Point> listPoints;

@@ -10,7 +10,7 @@ void PixelBuffer::clear()
     m_pixelBuffer = vector<vector<char>>(m_height, vector<char>(m_width, m_bgChar));
 }
 
-void PixelBuffer::affiche() const
+void PixelBuffer::draw() const
 {
     for(int y = 0; y < m_height; ++y)
     {
@@ -22,26 +22,25 @@ void PixelBuffer::affiche() const
     cout << endl;
 }
 
-void PixelBuffer::placePix(char pixel, Point p)
+bool PixelBuffer::isInBuffer(Point p)
+{
+    int x = p.getCoord()[0];
+    int y = p.getCoord()[1];
+    return (x >= 0 && x<m_width && y >= 0 && y < m_height);
+}
+
+void PixelBuffer::putPixel(char pixel, Point p)
 {
     int x = round(p.getCoord()[0]);
     int y = round(p.getCoord()[1]);
-    if(x<=m_width && y<=m_height)
+    
+    if (isInBuffer(p))
     {
         m_pixelBuffer[y][x] = pixel;
     }
 }
 
-bool PixelBuffer::isInBuffer(Point p)
-{
-    int x = p.getCoord()[0];
-    int y = p.getCoord()[1];
-    return (x >= 0 && x<=m_width && y >= 0 && y <= m_height);
-}
-
-
-
-void PixelBuffer::drawTriangle(char pix, Triangle tri)
+void PixelBuffer::putTriangle(Triangle tri)
 {
     vector<double> limits = tri.limitTriangle();
     int xMin, xMax, yMin, yMax;
@@ -55,11 +54,9 @@ void PixelBuffer::drawTriangle(char pix, Triangle tri)
         for(int x = xMin; x < xMax; ++x)
         {
             Point p(x,y);
-            if (isInBuffer(p)){
-                if (p.isInTriangle(tri))
-                {
-                    placePix(pix, p);
-                }
+            if (p.isInTriangle(tri))
+            {
+                putPixel(tri.getPixel(), p);
             }
         }
     }

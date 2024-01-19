@@ -9,34 +9,38 @@
 
 using namespace std;
 
+// PARAM SCREEN
+#define WIDTH 80
+#define HEIGHT 24
+
+
 int main ()
 {
-    int width = 90;
-    int height = 30;
+    int width = WIDTH;
+    int height = HEIGHT - 1; //nothing displayable in terminal's last line
+
     PixelBuffer myBuffer(' ', width, height);
-    Point P1(10, 5), P2(5, 10), P3(15, 10);
-    Triangle tri1(P1, P2, P3);
-    Point Q1(10, 20), Q2(5, 25), Q3(15, 25);
-    Triangle tri2(Q1, Q2, Q3);
+    Point O(4,5);
+    Point P(34,15);
+    Point Q(75,2);
+    
+    
     int i = 0;
+    int z = 0;
     while(1)
     {
-        i++;
-        myBuffer.clear();
-        P1 = Point(P1.getCoord()[0]+i, P1.getCoord()[1]); 
-        P2 = Point(P2.getCoord()[0]+i/2, P2.getCoord()[1]); 
-        P3 = Point(P3.getCoord()[0]+i, P3.getCoord()[1]); 
-        tri1 = Triangle(P1, P2, P3);
+        // i--;
+        z++;
+        Point O(75+i,2+z);
+        Point P(WIDTH/2+i,HEIGHT/2+z);
+        Point Q(75+i,20+z); 
+        Triangle tri('/', O, P, Q);
 
-        Q1 = Point(Q1.getCoord()[0]+i, Q1.getCoord()[1]); 
-        Q2 = Point(Q2.getCoord()[0]+i, Q2.getCoord()[1]+i); 
-        Q3 = Point(Q3.getCoord()[0]+i/2, Q3.getCoord()[1]); 
-        tri2 = Triangle(Q1, Q2, Q3);
-
-        myBuffer.drawTriangle('1', tri1);
-        myBuffer.drawTriangle('2', tri2);
-        myBuffer.affiche();
-        this_thread::sleep_for(chrono::milliseconds(100));
+        myBuffer.clear();        
+        // myBuffer.putPixel('*', O);
+        myBuffer.putTriangle(tri);
+        myBuffer.draw();
+        this_thread::sleep_for(chrono::milliseconds(300));
     }
     return 0;
 }

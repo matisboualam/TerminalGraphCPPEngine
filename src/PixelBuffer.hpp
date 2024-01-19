@@ -13,12 +13,12 @@ class Triangle;
 class PixelBuffer
 {
 public:
-    PixelBuffer(char, int, int);
-    void affiche() const;
-    void placePix(char pix, Point p);
-    bool isInBuffer(Point p);
-    void drawTriangle(char pix, Triangle tri);
-    void clear();
+    PixelBuffer(char, int, int); //char for background, width, height
+    void draw() const; //display Buffer
+    bool isInBuffer(Point p); // check if Point outside Buffer dimension
+    void putPixel(char pix, Point p); //place a pixel in the Buffer regarding the coord from Point
+    void putTriangle(Triangle tri);
+    void clear(); //clears Buffer
 private:
     char m_bgChar;
     int m_width;
