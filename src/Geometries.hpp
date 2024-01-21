@@ -6,12 +6,14 @@
 #include <cmath>
 #include <algorithm>
 
+
 // Forward declaration
 class PixelBuffer;
 class Point2D;
 class Triangle2D;
 class Point3D;
 class Triangle3D;
+class Camera;
 
 class Point2D
 {
@@ -35,8 +37,10 @@ class Point3D
 {
 public:
     Point3D(double x, double y, double z); // x (horizontal), y (vertical) normalized (between -1:1)
-    Point2D projection(); // 3D to 2D point
-    
+    std::vector<double> getCoord();
+    Point2D projection(double focalLength); // 3D to 2D point
+    Point3D rotationX(double pitch);
+    Point3D rotationY(double yaw);
 
     Point3D operator*(const double c) const;
     Point3D operator/(const double c) const;
@@ -68,9 +72,11 @@ class Triangle3D
 {
 public:
     Triangle3D(char pix, Point3D P1, Point3D P2, Point3D P3); //char for Triangle3D, coords from 3 vertices
-    Triangle2D projection();
+    Triangle2D projection(double focalLength);
     Triangle3D translate(Point3D P);
-
+    Triangle3D rotationX(double pitch);
+    Triangle3D rotationY(double yaw);
+    
 private:
     char m_pix;
     Point3D m_P1;

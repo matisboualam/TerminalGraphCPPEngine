@@ -3,12 +3,9 @@
 
 using namespace std;
 
-PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_height(h), m_pixelBuffer(m_height,vector<char>(m_width, bg)) {}
+///////////PixelBuffer///////////
 
-void PixelBuffer::clear()
-{
-    m_pixelBuffer = vector<vector<char>>(m_height, vector<char>(m_width, m_bgChar));
-}
+PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_height(h), m_pixelBuffer(m_height,vector<char>(m_width, bg)) {}
 
 void PixelBuffer::draw() const
 {
@@ -60,4 +57,44 @@ void PixelBuffer::putTriangle2D(Triangle2D tri)
             }
         }
     }
+}
+
+void PixelBuffer::putMesh(vector<Triangle3D> mesh, Camera cam)
+{
+    for (int i=0; i<mesh.size(); i++)
+    {
+        putTriangle2D(mesh[i].translate(cam.getPos()).rotationY(cam.getYaw()).rotationX(cam.getPitch()).projection(cam.getFocalLength()));
+    }
+}
+
+void PixelBuffer::clear()
+{
+    m_pixelBuffer = vector<vector<char>>(m_height, vector<char>(m_width, m_bgChar));
+}
+
+///////////Camera///////////
+
+Camera::Camera(Point3D position, double pitch, double yaw) : m_position(position), m_pitch(pitch), m_yaw(yaw), m_focalLength(1) {}
+
+Point3D Camera::getPos()
+{
+    double x = m_position.getCoord()[0]*(-1);
+    double y = m_position.getCoord()[1]*(-1);
+    double z = m_position.getCoord()[2];
+    return(Point3D(x,y,z));
+}
+
+double Camera::getPitch()
+{
+    return(m_pitch);
+}
+
+double Camera::getYaw()
+{
+    return(m_yaw);
+}
+
+double Camera::getFocalLength()
+{
+    return(m_focalLength);
 }

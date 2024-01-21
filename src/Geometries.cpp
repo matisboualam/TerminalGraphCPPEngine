@@ -14,7 +14,7 @@ Point2D::Point2D (double x, double y) : m_x(x), m_y(y)
 void Point2D::toScreen()
 {
     m_coord[0] = (SCREEN_RATIO * m_x + 1) * (WIDTH / 2);
-    m_coord[1] = (-m_y * SCREEN_RATIO + 1) * (HEIGHT / 2);
+    m_coord[1] = (-m_y + 1) * (HEIGHT / 2);
 }
 
 vector<double> Point2D::getCoord()
@@ -54,9 +54,29 @@ Point2D Point2D::operator+(const Point2D P) const
 Point3D::Point3D (double x, double y, double z) : m_x(x), m_y(y), m_z(z) 
 {}
 
-Point2D Point3D::projection()
+vector<double> Point3D::getCoord()
 {
-    return Point2D(m_x, m_y) / m_z;
+    vector<double> coord = {m_x,m_y,m_z};
+    return(coord);
+}
+
+Point2D Point3D::projection(double focalLength)
+{
+    return Point2D(m_x, m_y) / m_z * focalLength;
+}
+
+Point3D Point3D::rotationX(double pitch)
+{
+    double y = cos(pitch) * m_y - sin(pitch) * m_z;
+    double z = sin(pitch) * m_y + cos(pitch) * m_z;
+    return Point3D(m_x, y, z);
+}
+
+Point3D Point3D::rotationY(double yaw)
+{
+    double x = cos(yaw) * m_x + sin(yaw) * m_z;
+    double z = -sin(yaw) * m_x + cos(yaw) * m_z;
+    return Point3D(x, m_y, z);
 }
 
 Point3D Point3D::operator*(const double c) const
@@ -119,12 +139,22 @@ Triangle3D::Triangle3D (char pix, Point3D P1, Point3D P2, Point3D P3) : m_pix(pi
 {
 }
 
-Triangle2D Triangle3D::projection()
+Triangle2D Triangle3D::projection(double focalLength)
 {
-    return Triangle2D(m_pix, m_P1.projection(), m_P2.projection(), m_P3.projection());
+    return (Triangle2D(m_pix, m_P1.projection(focalLength), m_P2.projection(focalLength), m_P3.projection(focalLength)));
 }
 
 Triangle3D Triangle3D::translate(Point3D P)
 {
     return Triangle3D(m_pix, m_P1 + P, m_P2 + P, m_P3 + P);
+}
+
+Triangle3D Triangle3D::rotationX(double pitch)
+{
+    return Triangle3D(m_pix, m_P1.rotationX(pitch), m_P2.rotationX(pitch), m_P3.rotationX(pitch));
+}
+
+Triangle3D Triangle3D::rotationY(double yaw)
+{
+    return Triangle3D(m_pix, m_P1.rotationY(yaw), m_P2.rotationY(yaw), m_P3.rotationY(yaw));
 }
