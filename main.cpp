@@ -5,6 +5,7 @@
 #include <thread>
 #include <ncurses.h>
 
+
 #include "src/PixelBuffer.hpp"
 #include "src/Geometries.hpp"
 
@@ -50,30 +51,31 @@ void inputs(int ch, Camera& cam, double dt)
 
 int main ()
 {
-    int width = WIDTH ;
-    int height = HEIGHT -1; //nothing displayable in terminal's last line
+// keyboard and screen interaction
+    initscr();
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, true); //no interrupt mode
+    int ch; //char pressed on keyboard
+    int width, height;
+    getmaxyx(stdscr, height, width);
 
 //buffer init
-    PixelBuffer myBuffer(' ', width, height);
+    PixelBuffer myBuffer(' ', width, height-1);
 
 //cam init
     Point3D camPos = Point3D(0,0,3);
     Camera cam(camPos, 0, 0);
 
-// keyboard interaction
-    initscr();
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, true);
-    int ch;
 
+//Scene elements
     Point3D O(0,0,0);
-    Point3D P(1,0,0.5);
-    Point3D Q(0,1,0);
+    Point3D P(0.5,0,0);
+    Point3D Q(0,0.5,0);
     Triangle3D tri1('@', O, P, Q);
 
-    Point3D R(1,1,0);
-    Point3D S(1,0,-0.5);
-    Point3D T(0,1,0);
+    Point3D R(0.5,0.5,0);
+    Point3D S(0.4,0,-0.5);
+    Point3D T(0,0.5,0);
     Triangle3D tri2('@', R, S, T);
 
     vector<Triangle3D> mesh({tri1, tri2});
@@ -82,7 +84,10 @@ int main ()
 
     while((ch = getch()) != 'x')
     {
-        chrono::high_resolution_clock::time_point current = chrono::system_clock::now();
+        getmaxyx(stdscr, height, width); //update terminal/buffer size
+        myBuffer.setDimension(width, height);
+
+        chrono::high_resolution_clock::time_point current = chrono::system_clock::now();  //speed regulation
         chrono::duration<double> dt = chrono::duration_cast<chrono::duration<double>>(current - last);
         last = current;
 
@@ -94,7 +99,7 @@ int main ()
         myBuffer.putMesh(mesh, cam);
         myBuffer.displayCamParam(cam);
         myBuffer.draw();
-        // this_thread::sleep_for(chrono::milliseconds(10));
+        this_thread::sleep_for(chrono::milliseconds(10));
     }
     endwin();
     return 0;

@@ -7,6 +7,13 @@ using namespace std;
 
 PixelBuffer::PixelBuffer(char bg, int w, int h) : m_bgChar(bg), m_width(w), m_height(h), m_pixelBuffer(m_height,vector<char>(m_width, bg)) {}
 
+void PixelBuffer::setDimension(const int w, const int h)
+{
+    m_width = w;
+    m_height = h-1;
+}
+
+
 void PixelBuffer::draw() const
 {
     for(int y = 0; y < m_height; ++y)

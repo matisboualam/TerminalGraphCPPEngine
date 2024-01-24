@@ -24,6 +24,7 @@ class PixelBuffer
 {
 public:
     PixelBuffer(char, int, int); //char for background, width, height
+    void setDimension(const int, const int);
     void draw() const; //display Buffer
     bool isInBuffer(Point2D p); // check if Point2D outside Buffer dimension
     void putPixel(char pix, Point2D p); //place a pixel in the Buffer regarding the coord from Point2D
