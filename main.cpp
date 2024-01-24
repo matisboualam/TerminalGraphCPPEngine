@@ -66,15 +66,15 @@ int main ()
     nodelay(stdscr, true);
     int ch;
 
-    Point3D O(-0.5,-0.7,0);
-    Point3D P(0.5,-0.7,0);
-    Point3D Q(0,0.5,0);
-    Triangle3D tri1('.', O, P, Q);
+    Point3D O(0,0,0);
+    Point3D P(1,0,0);
+    Point3D Q(0,1,0);
+    Triangle3D tri1('@', O, P, Q);
 
-    Point3D R(0,-0.7,-0.5);
-    Point3D S(0,-0.7,0.5);
-    Point3D T(0,0.5,0);
-    Triangle3D tri2('.', R, S, T);
+    Point3D R(1,1,0);
+    Point3D S(1,0,0);
+    Point3D T(0,1,0);
+    Triangle3D tri2('@', R, S, T);
 
     vector<Triangle3D> mesh({tri1, tri2});
 
