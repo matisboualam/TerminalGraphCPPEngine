@@ -93,7 +93,7 @@ Point3D Camera::getPos()
 {
     double x = m_position.getCoord()[0]*(-1);
     double y = m_position.getCoord()[1]*(-1);
-    double z = m_position.getCoord()[2];
+    double z = m_position.getCoord()[2]*(-1);
     return(Point3D(x,y,z));
 }
 

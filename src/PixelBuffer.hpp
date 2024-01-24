@@ -1,7 +1,7 @@
 #ifndef PIXELBUFFER_H
 #define PIXELBUFFER_H
-#define WIDTH 203
-#define HEIGHT 55
+#define WIDTH 307
+#define HEIGHT 77
 #define SCREEN_RATIO 0.7
 
 #include <iostream>
