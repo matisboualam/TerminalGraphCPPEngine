@@ -23,7 +23,7 @@ bool PixelBuffer::isInBuffer(Point2D p)
 {
     int x = p.getCoord()[0];
     int y = p.getCoord()[1];
-    return (x >= 0 && x<m_width && y >= 0 && y < m_height);
+    return (x > 0 && x<m_width && y >= 0 && y < m_height);
 }
 
 void PixelBuffer::putPixel(char pixel, Point2D p)
@@ -74,7 +74,7 @@ void PixelBuffer::clear()
 
 ///////////Camera///////////
 
-Camera::Camera(Point3D position, double pitch, double yaw) : m_position(position), m_pitch(pitch), m_yaw(yaw), m_focalLength(1) {}
+Camera::Camera(Point3D position, double pitch, double yaw) : m_position(position), m_originPosition(position), m_pitch(pitch), m_yaw(yaw), m_focalLength(1) {}
 
 Point3D Camera::getPos()
 {
@@ -82,6 +82,11 @@ Point3D Camera::getPos()
     double y = m_position.getCoord()[1]*(-1);
     double z = m_position.getCoord()[2];
     return(Point3D(x,y,z));
+}
+
+Point3D Camera::getOriginPos()
+{
+    return(m_originPosition);
 }
 
 double Camera::getPitch()
@@ -97,4 +102,41 @@ double Camera::getYaw()
 double Camera::getFocalLength()
 {
     return(m_focalLength);
+}
+
+void Camera::setPos(const Point3D P)
+{
+    m_position = m_position + P;
+}
+
+void Camera::setPitch(const double c)
+{
+    m_pitch += c;
+}
+
+void Camera::setYaw(const double c)
+{
+    m_yaw += c;
+}
+
+void Camera::setFocalLength(const double c)
+{
+    m_focalLength += c;
+}
+
+
+
+// Point3D Camera::getLookDirection()
+// {
+//     return(1);
+// }
+
+Point3D Camera::getForwardDirection()
+{
+    return(Point3D(-sin(m_yaw),0,cos(m_yaw)));
+}
+
+Point3D Camera::getRightDirection()
+{
+    return(Point3D(cos(m_yaw),0,sin(m_yaw)));
 }

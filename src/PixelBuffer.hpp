@@ -43,11 +43,20 @@ class Camera
 public:
     Camera(Point3D, double, double);
     Point3D getPos();
+    Point3D getOriginPos();
     double getPitch();
     double getYaw();
     double getFocalLength();
+    void setPos(const Point3D);
+    void setPitch(const double);
+    void setYaw(const double);
+    void setFocalLength(const double);
+    // double getLookDirection();
+    Point3D getForwardDirection();
+    Point3D getRightDirection();
 private:
     Point3D m_position;
+    Point3D m_originPosition;
     double m_pitch;
     double m_yaw;
     double m_focalLength;
