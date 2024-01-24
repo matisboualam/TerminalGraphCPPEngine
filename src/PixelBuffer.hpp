@@ -1,7 +1,7 @@
 #ifndef PIXELBUFFER_H
 #define PIXELBUFFER_H
-#define WIDTH 90
-#define HEIGHT 30
+#define WIDTH 203
+#define HEIGHT 55
 #define SCREEN_RATIO 0.7
 
 #include <iostream>
@@ -29,6 +29,7 @@ public:
     void putPixel(char pix, Point2D p); //place a pixel in the Buffer regarding the coord from Point2D
     void putTriangle2D(Triangle2D tri);
     void putMesh(std::vector<Triangle3D> mesh, Camera cam); //place a list of Triangle3D in the Buffer
+    void displayCamParam(Camera cam);
     void clear(); //clears Buffer
 private:
     char m_bgChar;

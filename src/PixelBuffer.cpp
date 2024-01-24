@@ -67,6 +67,19 @@ void PixelBuffer::putMesh(vector<Triangle3D> mesh, Camera cam)
     }
 }
 
+void PixelBuffer::displayCamParam(Camera cam)
+{
+    string param = "Pos: (" + to_string(cam.getPos().getCoord()[0]) + ", " + to_string(cam.getPos().getCoord()[1]) + ", " + to_string(cam.getPos().getCoord()[2]) + ")" + " | Pitch: " + to_string(cam.getPitch()) + " | Yaw : " + to_string(cam.getYaw());
+    if (param.length() < m_width)
+    {
+        for (int i=0; i<param.length(); i++)
+        {
+            m_pixelBuffer[m_height-1][i+1] = param[i];
+        }
+    }
+}
+    
+
 void PixelBuffer::clear()
 {
     m_pixelBuffer = vector<vector<char>>(m_height, vector<char>(m_width, m_bgChar));
